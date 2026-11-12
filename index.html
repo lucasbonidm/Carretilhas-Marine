@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comparativo de Carretilhas Marine Sports · @lucasbonipesca</title>
+<meta name="description" content="11 carretilhas Marine Sports lado a lado: peso, drag, recolhimento, capacidade e preço. Ordene, compare e veja as escolhas do Lucas Boni Pesca.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Comparativo de Carretilhas Marine Sports">
+<meta property="og:description" content="11 carretilhas lado a lado: peso, drag, recolhimento e preço. Compare e escolha a sua.">
+<meta name="theme-color" content="#0b0e13">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎣</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e13; --panel:#121720; --panel2:#171d28; --line:#232b38;
+    --text:#e8edf4; --muted:#8a95a8; --accent:#38bdf8; --accentSoft:rgba(56,189,248,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--bg);overflow:hidden}
+  body{font-family:'Barlow',system-ui,sans-serif;color:var(--text)}
+
+  /* Palco fixo 1920x1080, escalado para caber na tela */
+  #stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;padding:18px 24px 14px;display:flex;flex-direction:column}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;height:52px;margin-bottom:10px}
+  .title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:34px;letter-spacing:.5px;text-transform:uppercase}
+  .title span{color:var(--accent)}
+  .controls{display:flex;gap:10px;align-items:center}
+  .sortinfo{font-size:14px;color:var(--muted);margin-right:8px;max-width:400px;text-align:right;line-height:1.2}
+  .sortinfo b{color:var(--text);font-weight:600}
+  button{font-family:inherit;font-size:15px;font-weight:600;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer;transition:background .15s,border-color .15s}
+  button:disabled{opacity:.35;cursor:default}
+  button.on{background:var(--accentSoft);border-color:var(--accent);color:#fff}
+  button:hover:not(:disabled){background:#1e2633;border-color:#33404f}
+
+  .table{flex:1;display:flex;gap:6px;min-height:0}
+
+  /* Coluna de rótulos */
+  .labels{width:196px;flex:none;display:flex;flex-direction:column}
+  .labels .head{height:var(--headH)}
+  .label{height:var(--rowH);display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 14px;font-weight:600;font-size:15px;color:#c9d2df;border-radius:6px 0 0 6px;user-select:none}
+  .label.alt{background:var(--panel)}
+  .gsep{height:var(--gsepH);flex:none}
+  .labels .gsep{font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);opacity:.75;padding:3px 0 0 14px;line-height:1}
+  .col .gsep{border-left:1px solid var(--line);border-right:1px solid var(--line);background:var(--bg)}
+  .col.sel .gsep{border-color:rgba(56,189,248,.45)}
+  .label.sortable{cursor:pointer}
+  .label.sortable:hover{color:#fff;background:#1a2230}
+  .label .arrow{font-size:12px;color:#4b5668;width:14px;text-align:center}
+  .label.sortable .arrow::after{content:'⇅'}
+  .label.active{color:#fff;background:var(--accentSoft)!important;box-shadow:inset 3px 0 0 var(--accent)}
+  .label.active .arrow{color:var(--accent)}
+  .label.active.desc .arrow::after{content:'▼'}
+  .label.active.asc .arrow::after{content:'▲'}
+
+  /* Colunas das carretilhas */
+  .reels{flex:1;display:flex;gap:6px;min-width:0}
+  .col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;will-change:transform;transition:opacity .4s,filter .4s,flex-grow .55s cubic-bezier(.22,.8,.24,1),margin .55s cubic-bezier(.22,.8,.24,1)}
+  .col .head{cursor:pointer}
+  .col.sel .head{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+  .col.sel .name{color:var(--accent)}
+  .col.sel .cell{border-color:rgba(56,189,248,.45)}
+  .col.sel .cell:last-child{border-bottom-color:rgba(56,189,248,.45)}
+  .reels.spot .col:not(.sel){opacity:.18;filter:grayscale(1)}
+  .reels.isolate .col:not(.sel){flex-grow:0;opacity:0;margin-left:-6px;pointer-events:none}
+  .reels.isolate .col.sel .name{font-size:32px}
+  .reels.isolate .col.sel .cell .v{font-size:23px}
+  .reels.isolate .col.sel .cell .s{font-size:15px}
+  .cell .v,.cell .s,.name{transition:font-size .45s}
+  .col .head{height:var(--headH);background:var(--panel2);border:1px solid var(--line);border-radius:10px 10px 0 0;display:flex;flex-direction:column;align-items:center;padding:8px 8px 6px;position:relative}
+  .photo{width:100%;height:118px;border-radius:7px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .photo:not(.empty){background:#fff;cursor:zoom-in;padding:4px;transition:transform .2s,box-shadow .2s}
+  .photo:not(.empty):hover{transform:scale(1.04);box-shadow:0 0 0 2px var(--accent)}
+  .photo img{max-width:100%;max-height:100%;object-fit:contain}
+  .photo.empty{border:1.5px dashed #2c3646;color:#3d4859;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+  .name{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;line-height:1.02;text-transform:uppercase;padding-top:6px}
+  .rank{position:absolute;top:6px;left:6px;min-width:26px;height:26px;border-radius:13px;background:var(--accent);color:#06121c;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);transition:opacity .25s,transform .25s}
+  .sorted .rank{opacity:1;transform:scale(1)}
+
+  .cell{height:var(--rowH);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 6px;border-left:1px solid var(--line);border-right:1px solid var(--line);line-height:1.12}
+  .cell.alt{background:var(--panel)}
+  .cell.buycell{background:transparent;padding:0 10px}
+  a.buy{display:flex;align-items:center;justify-content:center;width:100%;height:calc(var(--rowH) - 12px);border-radius:8px;background:#22c55e;color:#04210f;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;box-shadow:0 4px 14px rgba(34,197,94,.28);transition:transform .15s,background .15s,box-shadow .15s}
+  a.buy:hover{background:#2fe06c;transform:translateY(-1px);box-shadow:0 6px 20px rgba(34,197,94,.45)}
+  .reels.isolate .col.sel a.buy{font-size:28px}
+  .labels .label.buylabel{background:transparent!important}
+  a.cell{color:inherit;text-decoration:none;cursor:pointer}
+  a.cell:hover{background:var(--accentSoft)!important}
+  .cell:last-child{border-bottom:1px solid var(--line);border-radius:0 0 10px 10px}
+  .cell .v{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .cell .s{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;margin-top:1px}
+  .cell .v.na{color:#4b5668;font-weight:500}
+  .cell.hl{background:var(--accentSoft)!important}
+  .cell.hl .v{color:#fff}
+
+  .footer{height:26px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 4px}
+  .note{font-size:12.5px;color:#6b7689;max-width:1500px}
+  .credits{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:600;color:#c9d2df}
+  .credits svg{width:19px;height:19px;fill:currentColor}
+  .credits .yt{color:#ff4b4b}.credits .ig{color:#e1306c}
+  .credits a{display:flex;align-items:center;text-decoration:none;transition:transform .15s,opacity .15s}
+  .credits a:hover{transform:translateY(-1px);opacity:.85}
+  .credits b{color:#fff;font-weight:700;letter-spacing:.3px}
+  #lb{position:fixed;inset:0;background:rgba(5,8,12,.82);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;z-index:10;cursor:zoom-out}
+  #lb.open{opacity:1;pointer-events:auto}
+  #lb .box{display:flex;flex-direction:column;align-items:center}
+  #lb .offer{display:none;margin-top:12px;background:#22c55e;color:#04210f;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px;letter-spacing:1px;text-transform:uppercase;padding:10px 48px;border-radius:10px;box-shadow:0 6px 18px rgba(34,197,94,.35)}
+  #lb .offer.show{display:inline-block}
+  #lb .offer:hover{background:#2fe06c}
+  #lb .box{background:#fff;border-radius:16px;padding:20px 20px 14px;max-width:min(80vw,820px);transform:scale(.92);transition:transform .3s cubic-bezier(.22,.8,.24,1);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  #lb.open .box{transform:scale(1)}
+  #lb img{display:block;width:100%;max-height:72vh;object-fit:contain}
+  #lb .cap{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,38px);text-transform:uppercase;color:#0b0e13;text-align:center;margin-top:6px}
+
+  /* ================= CELULAR ================= */
+  #mobile{display:none}
+  body.mobile{overflow:visible;height:auto}
+  body.mobile #stage{display:none}
+  body.mobile #mobile{display:block}
+  #mobile{max-width:640px;margin:0 auto;padding:0 14px 28px}
+  .mhead{padding:20px 2px 10px}
+  .mtitle{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;line-height:1;text-transform:uppercase}
+  .mtitle span{color:var(--accent)}
+  .msub{color:var(--muted);font-size:14px;margin-top:6px}
+  .mcredits{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .mcredits a{display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);color:#fff;text-decoration:none;font-weight:600;font-size:14px}
+  .mcredits svg{width:18px;height:18px;fill:currentColor}
+  .mcredits .ig svg{color:#e1306c}.mcredits .yt svg{color:#ff4b4b}
+  .mbar{position:sticky;top:0;z-index:5;background:rgba(11,14,19,.94);backdrop-filter:blur(8px);margin:6px -14px 0;padding:10px 14px;border-bottom:1px solid var(--line)}
+  .mbar .lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:7px}
+  .chips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none;font-size:14px;font-weight:600;padding:7px 12px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:#c9d2df;white-space:nowrap}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#06121c}
+  .mlist{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+  .mcard{background:var(--panel2);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .mtop{display:flex;gap:12px;padding:12px}
+  .mphoto{position:relative;width:132px;height:132px;flex:none;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:4px;cursor:zoom-in}
+  .mphoto img{max-width:100%;max-height:100%;object-fit:contain}
+  .mrank{position:absolute;top:-6px;left:-6px;min-width:28px;height:28px;border-radius:14px;background:var(--accent);color:#06121c;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+  .mcard.sorted .mrank{display:flex}
+  .minfo{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between}
+  .mname{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:25px;line-height:1.02;text-transform:uppercase}
+  .mprice{font-size:23px;font-weight:700;margin-top:4px}
+  .mbuy{display:flex;align-items:center;justify-content:center;height:46px;margin-top:8px;border-radius:10px;background:#22c55e;color:#04210f;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;box-shadow:0 4px 14px rgba(34,197,94,.28)}
+  .mspecs{border-top:1px solid var(--line)}
+  .mrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 14px;font-size:14.5px}
+  .mrow:nth-child(even){background:var(--panel)}
+  .mrow dt{color:var(--muted);font-weight:500;flex:none}
+  .mrow dd{text-align:right;font-weight:600}
+  .mrow dd small{display:block;color:var(--muted);font-weight:400;font-size:12px}
+  .mrow.hl{background:var(--accentSoft)!important;box-shadow:inset 3px 0 0 var(--accent)}
+  .mrow.hl dt{color:#fff}
+  .mcard.pricehl .mprice{color:var(--accent)}
+  .mfoot{margin-top:18px;font-size:12px;color:#6b7689;line-height:1.5}
+
+  /* ===== Minhas escolhas ===== */
+  :root{--gold:#fbbf24}
+  .picks-btn{color:var(--gold);border-color:rgba(251,191,36,.4)}
+  .picks-btn.on{background:var(--gold);color:#1a1200;border-color:var(--gold)}
+  .picks-btn:hover:not(.on){background:rgba(251,191,36,.1)!important}
+  .tag{position:absolute;left:50%;top:104px;transform:translate(-50%,6px) scale(.9);opacity:0;white-space:nowrap;font-size:10.5px;font-weight:700;letter-spacing:0;padding:3px 7px;border-radius:999px;box-shadow:0 3px 10px rgba(0,0,0,.45);transition:opacity .3s,transform .3s;pointer-events:none;z-index:2}
+  .tag.tq{background:#f59e0b;color:#1f1300}
+  .tag.mx{background:#a78bfa;color:#160b33}
+  .tag.cr{background:#fb7185;color:#2a060d}
+  .reels.picks .col.pick .tag{opacity:1;transform:translate(-50%,0) scale(1)}
+  .col.pick .head{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+  .col.pick .name{color:var(--gold)}
+  .col.pick .cell,.col.pick .cell:last-child{border-color:rgba(251,191,36,.45)}
+  .reels.isolate .col.pick .tag{font-size:15px;padding:5px 14px}
+  .mpick{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;margin-bottom:6px}
+  .mpick.tq{background:#f59e0b;color:#1f1300}.mpick.mx{background:#a78bfa;color:#160b33}.mpick.cr{background:#fb7185;color:#2a060d}
+  .mcard.pick{border-color:rgba(251,191,36,.55)}
+
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="topbar">
+    <div class="title">Carretilhas <span>Marine Sports</span> · Comparativo</div>
+    <div class="controls">
+      <div class="sortinfo" id="sortinfo">Clique numa spec para ordenar · no nome para destacar</div>
+      <button id="btnPicks" class="picks-btn" title="Tecla P">★ Minhas escolhas</button>
+      <button id="btnIso" title="Tecla C" disabled>◎ Isolar destacadas</button>
+      <button id="btnClear" title="Tecla Esc" disabled>✕ Limpar destaque</button>
+      <button id="btnReset" title="Tecla 0">↺ Ordem original</button>
+      <button id="btnFull" title="Entrar/sair da tela cheia (só pelo botão)">⛶ Tela cheia</button>
+    </div>
+  </div>
+  <div class="table">
+    <div class="labels" id="labels"></div>
+    <div class="reels" id="reels"></div>
+  </div>
+  <div class="footer">
+    <div class="note" id="note"></div>
+    <div class="credits">
+      <a class="ig" href="https://www.instagram.com/lucasbonipesca" target="_blank" rel="noopener" title="Instagram @lucasbonipesca"><svg viewBox="0 0 24 24" aria-label="Instagram"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 2c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.2.8-.4.4-.6.7-.8 1.2-.2.4-.3 1-.4 2.1C2.8 9.9 2.8 10.3 2.8 12s0 2.1.1 3.3c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.2.4.4.7.6 1.2.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.2-.8.4-.4.6-.7.8-1.2.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.2-.4-.4-.7-.6-1.2-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1a4.7 4.7 0 110 9.4 4.7 4.7 0 010-9.4zm0 7.6a2.9 2.9 0 100-5.8 2.9 2.9 0 000 5.8zm5.9-7.8a1.1 1.1 0 11-2.2 0 1.1 1.1 0 012.2 0z"/></svg></a>
+      <a class="yt" href="https://www.youtube.com/@lucasbonipesca" target="_blank" rel="noopener" title="YouTube @lucasbonipesca"><svg viewBox="0 0 24 24" aria-label="YouTube"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg></a>
+      <a class="handle" href="https://www.youtube.com/@lucasbonipesca" target="_blank" rel="noopener"><b>@lucasbonipesca</b></a>
+    </div>
+  </div>
+</div>
+
+<div id="mobile">
+  <div class="mhead">
+    <div class="mtitle">Carretilhas <span>Marine Sports</span><br>Comparativo</div>
+    <div class="msub">11 modelos lado a lado · toque na foto para ampliar</div>
+    <div class="mcredits">
+      <a class="ig" href="https://www.instagram.com/lucasbonipesca" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-label="Instagram"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 2c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.2.8-.4.4-.6.7-.8 1.2-.2.4-.3 1-.4 2.1C2.8 9.9 2.8 10.3 2.8 12s0 2.1.1 3.3c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.2.4.4.7.6 1.2.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.2-.8.4-.4.6-.7.8-1.2.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.2-.4-.4-.7-.6-1.2-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1a4.7 4.7 0 110 9.4 4.7 4.7 0 010-9.4zm0 7.6a2.9 2.9 0 100-5.8 2.9 2.9 0 000 5.8zm5.9-7.8a1.1 1.1 0 11-2.2 0 1.1 1.1 0 012.2 0z"/></svg>@lucasbonipesca</a>
+      <a class="yt" href="https://www.youtube.com/@lucasbonipesca" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-label="YouTube"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>@lucasbonipesca</a>
+    </div>
+  </div>
+  <div class="mbar"><div class="lbl">Ordenar por</div><div class="chips" id="mchips"></div></div>
+  <div class="mlist" id="mlist"></div>
+  <div class="mfoot" id="mfoot"></div>
+</div>
+<div id="lb"><div class="box"><img alt=""><div class="cap"></div><a class="offer" target="_blank" rel="noopener sponsored">Comprar</a></div></div>
+<script>
+/* ============ DADOS ============
+   img: caminho da foto (null = placeholder)
+   preco: número em R$ (null = aguardando)
+   link: link de afiliado (null = sem link)            */
+const DBS = {v:'DBS', s:'centrífugo + magnético'};
+const CENT = {v:'Centrífugo', s:'regulagem interna'};
+const MAG = {v:'Magnético', s:'regulagem externa'};
+
+const REELS = [
+  {nome:'Venza DS', chassi:'Grafite', laterais:'Grafite', carretel:{mm:32,s:'alumínio'},
+   rec:7.5, ipt:75, drag:5.8, discos:'3 carbono + 3 inox', peso:199,
+   multi:[[.29,120],[.35,90]], mono:[[.33,140],[.37,110]], arremesso:DBS,
+   rosca:'Latão cromado', coroa:'Latão', pinhao:{v:'Latão'}, rol:[7,1],
+   guia:{v:'Titânio'}, manivela:{mm:90,s:'emborrachado'}, alarme:{v:'Sim'}, img:'fotos/venza-ds.jpg', preco:349, link:'https://meli.la/1RoyVfc'},
+
+  {nome:'Brisa LS 11000', chassi:'Grafite', laterais:'Grafite', carretel:{mm:32,s:'alumínio aliviado'},
+   rec:7.5, ipt:76, drag:5.8, discos:'3 carbono + 3 inox', peso:198,
+   multi:[[.29,100],[.35,75]], mono:[[.30,130],[.33,110]], arremesso:DBS,
+   rosca:'Latão cromado', coroa:'Latão', pinhao:{v:'Latão'}, rol:[10,1],
+   guia:{v:'Titânio',s:'dois estágios'}, manivela:{mm:85,s:'emborrachado'}, alarme:{v:'Sim'}, img:'fotos/brisa-ls-11000.jpg', preco:425.9, link:'https://meli.la/1qMcFmq'},
+
+  {nome:'Black Eagle', chassi:'Alumínio', laterais:'Carbono', carretel:{mm:35,s:'fundo · Speed Knot'},
+   rec:8.3, ipt:91, drag:7, discos:null, peso:190,
+   multi:[[.29,120],[.35,100]], mono:[[.33,175],[.37,140]], arremesso:{v:'ACB',s:'centrífugo · reg. externa'},
+   rosca:'Duralumínio', coroa:'Duralumínio', pinhao:{v:'Latão',s:'com rolamento'}, rol:[7,1],
+   guia:{v:'Titânio',s:'dois estágios'}, manivela:{mm:100,s:'emborrachado'}, alarme:{v:'Sim'}, img:'fotos/black-eagle.jpg', preco:759.69, link:'https://meli.la/2Ss3Bb1'},
+
+  {nome:'Contender Ocean BG', chassi:'Alumínio', laterais:{v:'Alumínio',s:'lado da manivela'}, carretel:{mm:35,s:'alumínio'},
+   rec:7.1, ipt:78, drag:7, discos:'3 carbono + 3 inox', peso:232,
+   multi:[[.29,150],[.35,100]], mono:[[.30,220],[.37,140]], arremesso:DBS,
+   rosca:'Latão cromado', coroa:'Latão', pinhao:{v:'Latão'}, rol:[5,1],
+   guia:{v:'Titânio'}, manivela:{mm:100,s:'emborrachado'}, alarme:{v:'Sim'}, img:'fotos/contender-ocean-bg.jpg', preco:898, link:'https://meli.la/1ubCQS1'},
+
+  {nome:'Brisa BG Alarm', chassi:'Grafite', laterais:'Grafite', carretel:{mm:39,s:'alumínio'},
+   rec:7.2, ipt:88.2, drag:9, discos:null, peso:259,
+   multi:[[.29,180],[.35,120]], mono:[[.33,210],[.37,170]], arremesso:CENT,
+   rosca:'Latão cromado', coroa:'Latão', pinhao:{v:'Latão',s:'com rolamento'}, rol:[7,1],
+   guia:{v:'Titânio'}, manivela:{mm:100,s:'emborrachado'}, alarme:{v:'Sim'}, img:'fotos/brisa-bg-alarm.jpg', preco:544, link:'https://meli.la/23XPFwF'},
+
+  {nome:'Brisa BG DBS', chassi:'Grafite', laterais:'Grafite', carretel:{mm:39,s:'alumínio'},
+   rec:7.2, ipt:88.2, drag:9, discos:null, peso:260,
+   multi:[[.29,180],[.35,120]], mono:[[.33,215],[.37,173]], arremesso:DBS,
+   rosca:'Latão cromado', coroa:'Latão', pinhao:{v:'Latão',s:'com rolamento'}, rol:[7,1],
+   guia:{v:'Titânio'}, manivela:{mm:100,s:'emborrachado'}, alarme:{v:'Sim'}, img:'fotos/brisa-bg-dbs.jpg', preco:537, link:'https://meli.la/1U9xac6'},
+
+  {nome:'Titan 300', chassi:'Alumínio', laterais:{v:'Alumínio',s:'lado da manivela'}, carretel:{mm:39,s:'alumínio'},
+   rec:7.1, ipt:87, drag:12, discos:'3 carbono + 3 inox', peso:314,
+   multi:[[.29,210],[.35,170]], mono:[[.35,210],[.40,160]], arremesso:CENT,
+   rosca:'Latão cromado', coroa:'Latão', pinhao:{v:'Latão',s:'com rolamento'}, rol:[6,1],
+   guia:{v:'Titânio',s:'sincronizado'}, manivela:{mm:100,s:'pegadores em EVA'}, alarme:{v:'On/Off'}, img:'fotos/titan-300.jpg', preco:812.88, link:'https://meli.la/17LXbVi'},
+
+  {nome:'Titan Pro 2 BG 8000', chassi:'Grafite', laterais:'Grafite', carretel:{mm:39,s:'alumínio · fundo'},
+   rec:8.1, ipt:97, drag:12, discos:'3 carbono + 3 inox', peso:298,
+   multi:[[.29,230],[.35,155]], mono:[[.35,230],[.40,175]], arremesso:CENT,
+   rosca:'Latão', coroa:'Alumínio', pinhao:{v:'Latão'}, rol:[7,1],
+   guia:{v:'Titânio',s:'dois estágios'}, manivela:{mm:100,s:'emborrachado'}, alarme:{v:'On/Off'}, img:'fotos/titan-pro-2-bg-8000.jpg', preco:718.96, link:'https://meli.la/1w2Baoi'},
+
+  {nome:'Titan Pro 2 BG 12000', chassi:'Grafite', laterais:'Grafite', carretel:{mm:39,s:'alumínio · fundo'},
+   rec:8.1, ipt:97, drag:12, discos:'3 carbono + 3 inox', peso:298,
+   multi:[[.29,230],[.35,155]], mono:[[.35,230],[.40,175]], arremesso:CENT,
+   rosca:'Latão', coroa:'Alumínio', pinhao:{v:'Latão'}, rol:[11,1],
+   guia:{v:'Titânio',s:'dois estágios'}, manivela:{mm:100,s:'emborrachado'}, alarme:{v:'On/Off'}, img:'fotos/titan-pro-2-bg-12000.jpg', preco:629, link:'https://meli.la/1MLgQMW'},
+
+  {nome:'Forza BG', chassi:'Alumínio', laterais:{v:'Alumínio',s:'lado da manivela'}, carretel:{mm:39,s:'alumínio'},
+   rec:8.0, ipt:92, drag:10, discos:'3 carbono + 3 inox', peso:316,
+   multi:[[.29,180],[.35,125]], mono:[[.35,190],[.40,150]], arremesso:MAG,
+   rosca:'Latão cromado', coroa:'Latão', pinhao:{v:'Latão',s:'com 2 rolamentos'}, rol:[6,1],
+   guia:null, manivela:{mm:100,s:'emborrachado'}, alarme:{v:'Não'}, img:'fotos/forza-bg.jpg', preco:495, link:'https://meli.la/2xw13k8'},
+
+  {nome:'Forza 400', chassi:'Alumínio', laterais:{v:'Alumínio',s:'lado da manivela'}, carretel:{mm:43,s:'alumínio'},
+   rec:8.1, ipt:101, drag:13, discos:{v:'3 carbono + 2 inox',s:'+ 1 duralumínio'}, peso:425,
+   multi:[[.29,290],[.35,200]], mono:[[.40,230],[.50,150]], arremesso:MAG,
+   rosca:'Duralumínio', coroa:'Latão', pinhao:{v:'Latão',s:'com 2 rolamentos'}, rol:[6,1],
+   guia:null, manivela:{mm:65,s:'pegador em carbono'}, alarme:{v:'On/Off'}, img:'fotos/forza-400.jpg', preco:649.99, link:'https://meli.la/1cVa74m'},
+];
+
+/* ============ ESCOLHAS DO LUCAS ============ */
+const PICKS = {
+  'Black Eagle':          {cat:'Tambaqui e tambacu', cls:'tq'},
+  'Brisa BG DBS':         {cat:'Tambaqui e tambacu', cls:'tq'},
+  'Forza BG':             {cat:'Pesca mista',        cls:'mx'},
+  'Titan Pro 2 BG 12000': {cat:'Pesca mista',        cls:'mx'},
+  'Forza 400':            {cat:'Peixe de couro',     cls:'cr'},
+};
+
+/* ============ FORMATAÇÃO ============ */
+const br = (n,d=0)=> n.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const mm = d => br(d,2);
+const txt = x => x==null ? null : (typeof x==='string' ? {v:x} : x);
+// Capacidade mono normalizada para o equivalente em 0,35 mm (metros × (d/0,35)²), média das duas medidas
+const monoEq = r => r.mono.reduce((a,[d,m])=>a + m*(d/.35)**2,0)/r.mono.length;
+const capCell = arr => ({v:`${mm(arr[0][0])} – ${arr[0][1]} m`, s:`${mm(arr[1][0])} – ${arr[1][1]} m`});
+
+/* ============ LINHAS (na ordem de exibição) ============
+   key: valor numérico para ordenar (ausente = não ordenável)
+   best: 'high' = maior é o padrão no 1º clique, 'low' = menor primeiro */
+const ROWS = [
+  {label:'Chassi',            cell:r=>txt(r.chassi)},
+  {label:'Laterais',          cell:r=>txt(r.laterais)},
+  {label:'Peso',              cell:r=>({v:`${r.peso} g`}), key:r=>r.peso, best:'low'},
+  {label:'Freio de arremesso',cell:r=>r.arremesso},
+  {label:'Rolamentos',        cell:r=>({v:`${r.rol[0]}+${r.rol[1]}`}), key:r=>r.rol[0]+r.rol[1], best:'high'},
+  {label:'Guia de linha',     cell:r=>txt(r.guia)},
+  {label:'Recolhimento',      cell:r=>({v:`${br(r.rec,1)}:1`}), key:r=>r.rec, best:'high'},
+  {label:'IPT',               cell:r=>({v:`${br(r.ipt, r.ipt%1?1:0)} cm`}), key:r=>r.ipt, best:'high', unit:'cm por volta'},
+  {label:'Capacidade (mono)',         cell:r=>capCell(r.mono), key:monoEq, best:'high', unit:'equivalente em 0,35 mm'},
+  {label:'Drag',              cell:r=>({v:`${br(r.drag, r.drag%1?1:0)} kg`}), key:r=>r.drag, best:'high'},
+  {label:'Discos do drag',    cell:r=>txt(r.discos)},
+  {label:'Coroa',             cell:r=>txt(r.coroa)},
+  {label:'Pinhão',            cell:r=>r.pinhao},
+  {label:'Manivela',          cell:r=>({v:`${r.manivela.mm} mm`, s:r.manivela.s}), key:r=>r.manivela.mm, best:'high', unit:'comprimento'},
+  {label:'Alarme de linha',   cell:r=>r.alarme},
+  {label:'Preço',             cell:r=>r.preco==null?{v:'aguardando',na:true}:{v:`R$ ${br(r.preco,2)}`, href:r.link}, key:r=>r.preco, best:'low'},
+  {label:'', buy:true, cell:r=>r.link?{buy:r.link}:null},
+];
+
+/* ============ LAYOUT ============ */
+const HEAD_H = 182;
+const GSEP_H = 17; // separador de bloco
+const N_GROUPS = ROWS.filter(r=>r.group).length;
+const AVAIL = 1080 - 18 - 14 - 62 - 26 - HEAD_H - N_GROUPS*GSEP_H; // altura útil para as linhas
+const ROW_H = Math.floor(AVAIL / ROWS.length);
+document.documentElement.style.setProperty('--gsepH', GSEP_H+'px');
+document.documentElement.style.setProperty('--rowH', ROW_H+'px');
+document.documentElement.style.setProperty('--headH', HEAD_H+'px');
+
+const labelsEl = document.getElementById('labels');
+const reelsEl = document.getElementById('reels');
+labelsEl.innerHTML = '<div class="head"></div>';
+ROWS.forEach((row,i)=>{
+  const d = document.createElement('div');
+  d.className = 'label' + (row.key ? ' sortable' : '') + (i%2 ? ' alt' : '') + (row.buy ? ' buylabel' : '');
+  d.innerHTML = `<span>${row.label}</span><span class="arrow"></span>`;
+  if(row.key) d.addEventListener('click',()=>sortBy(i));
+  row.el = d;
+  labelsEl.appendChild(d);
+});
+
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+REELS.forEach((r,idx)=>{
+  r.idx = idx;
+  const col = document.createElement('div');
+  col.className = 'col';
+  const photo = r.img ? `<div class="photo"><img src="${r.img}" alt="${esc(r.nome)}"></div>` : `<div class="photo empty">foto</div>`;
+  const pk = PICKS[r.nome];
+  const tag = pk ? `<div class="tag ${pk.cls}">★ ${pk.cat}</div>` : '';
+  let html = `<div class="head"><div class="rank"></div>${photo}${tag}<div class="name">${esc(r.nome)}</div></div>`;
+  ROWS.forEach((row,i)=>{
+    const c = row.cell(r);
+    const alt = i%2 ? ' alt' : '';
+    if(c && c.buy){ html += `<div class="cell buycell"><a class="buy" href="${esc(c.buy)}" target="_blank" rel="noopener sponsored">Comprar</a></div>`; return; }
+    if(row.buy){ html += `<div class="cell buycell"></div>`; return; }
+    if(!c) html += `<div class="cell${alt}"><div class="v na">—</div></div>`;
+    else {
+      const inner = `<div class="v${c.na?' na':''}">${esc(c.v)}</div>${c.s?`<div class="s">${esc(c.s)}</div>`:''}`;
+      html += c.href
+        ? `<a class="cell link${alt}" href="${esc(c.href)}" target="_blank" rel="noopener sponsored">${inner}</a>`
+        : `<div class="cell${alt}">${inner}</div>`;
+    }
+  });
+  col.innerHTML = html;
+  r.el = col;
+  reelsEl.appendChild(col);
+});
+
+/* ============ POPUP DA FOTO ============ */
+const lb = document.getElementById('lb');
+function openLB(r){
+  lb.querySelector('img').src=r.img;
+  lb.querySelector('.cap').textContent = r.nome + (r.preco!=null ? ` · R$ ${br(r.preco,2)}` : '');
+  const o = lb.querySelector('.offer');
+  if(r.link){ o.href=r.link; o.classList.add('show'); } else { o.removeAttribute('href'); o.classList.remove('show'); }
+  lb.classList.add('open');
+}
+lb.querySelector('.offer').addEventListener('click',e=>e.stopPropagation());
+function closeLB(){ lb.classList.remove('open'); }
+lb.addEventListener('click',closeLB);
+REELS.forEach(r=>{ if(r.img) r.el.querySelector('.photo').addEventListener('click',()=>openLB(r)); });
+
+/* ============ ORDENAÇÃO (com animação FLIP) ============ */
+let state = {row:null, dir:null};
+const sortinfo = document.getElementById('sortinfo');
+
+function applyOrder(list){
+  const first = new Map(REELS.map(r=>[r, r.el.getBoundingClientRect().left]));
+  list.forEach(r=>reelsEl.appendChild(r.el));
+  const scale = currentScale || 1;
+  list.forEach(r=>{
+    const dx = (first.get(r) - r.el.getBoundingClientRect().left)/scale;
+    if(!dx) return;
+    r.el.animate([{transform:`translateX(${dx}px)`},{transform:'translateX(0)'}],
+      {duration:650, easing:'cubic-bezier(.22,.8,.24,1)'});
+  });
+}
+
+function clearHighlight(){
+  ROWS.forEach(row=>row.el.classList.remove('active','asc','desc'));
+  REELS.forEach(r=>r.el.querySelectorAll('.cell.hl').forEach(c=>c.classList.remove('hl')));
+}
+
+function sortBy(i){
+  const row = ROWS[i];
+  let dir;
+  if(state.row===i) dir = state.dir==='asc' ? 'desc' : 'asc';
+  else dir = row.best==='low' ? 'asc' : 'desc';
+  state = {row:i, dir};
+
+  const withVal = REELS.filter(r=>row.key(r)!=null);
+  const noVal = REELS.filter(r=>row.key(r)==null).sort((a,b)=>a.idx-b.idx);
+  withVal.sort((a,b)=>{
+    const d = row.key(a)-row.key(b);
+    return (dir==='asc'?d:-d) || a.idx-b.idx;
+  });
+  const list = withVal.concat(noVal);
+  applyOrder(list);
+
+  clearHighlight();
+  row.el.classList.add('active',dir);
+  REELS.forEach(r=>r.el.querySelectorAll('.cell')[i].classList.add('hl'));
+
+  // posições (empates recebem o mesmo número)
+  let rank=0, prev;
+  list.forEach((r,k)=>{
+    const v = row.key(r);
+    const badge = r.el.querySelector('.rank');
+    if(v==null){ badge.textContent=''; r.el.classList.remove('sorted'); return; }
+    if(v!==prev) rank = k+1;
+    prev = v;
+    badge.textContent = rank;
+    r.el.classList.add('sorted');
+  });
+
+  const ordem = dir==='desc' ? 'maior → menor' : 'menor → maior';
+  sortinfo.innerHTML = `Ordenado por <b>${row.label}</b> · ${ordem}` + (row.unit?` <span style="opacity:.7">(${row.unit})</span>`:'');
+  if(withVal.length===0) sortinfo.innerHTML = `<b>${row.label}</b>: ainda sem dados para ordenar`;
+}
+
+function reset(){
+  state = {row:null, dir:null};
+  applyOrder([...REELS].sort((a,b)=>a.idx-b.idx));
+  clearHighlight();
+  REELS.forEach(r=>r.el.classList.remove('sorted'));
+  sortinfo.textContent = 'Clique numa spec para ordenar · no nome para destacar';
+}
+
+document.getElementById('btnReset').addEventListener('click',reset);
+
+/* ============ MODO APRESENTAÇÃO (destacar / isolar) ============ */
+const btnIso = document.getElementById('btnIso'), btnClear = document.getElementById('btnClear');
+let isolate = false;
+const selected = () => REELS.filter(r=>r.el.classList.contains('sel'));
+function updateSpot(){
+  const n = selected().length;
+  if(n===0) isolate = false;
+  reelsEl.classList.toggle('spot', n>0);
+  reelsEl.classList.toggle('isolate', isolate && n>0);
+  btnIso.disabled = n===0; btnClear.disabled = n===0;
+  btnIso.classList.toggle('on', isolate && n>0);
+  btnIso.textContent = isolate && n>0 ? '◎ Mostrar todas' : '◎ Isolar destacadas';
+}
+function toggleSel(r){ r.el.classList.toggle('sel'); updateSpot(); }
+function clearSel(){ REELS.forEach(r=>r.el.classList.remove('sel','pick')); isolate=false; setPicks(false); updateSpot(); }
+const btnPicks = document.getElementById('btnPicks');
+let picksOn = false;
+function setPicks(on){
+  picksOn = on;
+  reelsEl.classList.toggle('picks', on);
+  btnPicks.classList.toggle('on', on);
+}
+function togglePicks(){
+  if(picksOn){ clearSel(); return; }
+  REELS.forEach(r=>r.el.classList.remove('sel','pick'));
+  REELS.forEach(r=>{ if(PICKS[r.nome]) r.el.classList.add('sel','pick'); });
+  setPicks(true); updateSpot();
+}
+btnPicks.addEventListener('click',togglePicks);
+function toggleIso(){ if(selected().length===0) return; isolate=!isolate; updateSpot(); }
+REELS.forEach(r=>{
+  r.el.querySelector('.head').addEventListener('click',e=>{
+    if(r.img && e.target.closest('.photo')) return; // foto abre o popup
+    toggleSel(r);
+  });
+});
+btnIso.addEventListener('click',toggleIso);
+btnClear.addEventListener('click',clearSel);
+document.getElementById('btnFull').addEventListener('click',toggleFull);
+document.addEventListener('fullscreenchange',()=>{ if(!document.fullscreenElement){ try{ navigator.keyboard && navigator.keyboard.unlock && navigator.keyboard.unlock(); }catch(e){} } });
+function toggleFull(){
+  try{
+    if(!document.fullscreenElement){
+      document.documentElement.requestFullscreen().then(()=>{
+        // segura o Esc: o navegador só sai da tela cheia se o Esc for mantido pressionado
+        try{ if(navigator.keyboard && navigator.keyboard.lock) navigator.keyboard.lock(['Escape']).catch(()=>{}); }catch(e){}
+      }).catch(()=>{});
+    }
+    else document.exitFullscreen().catch(()=>{});
+  }catch(e){}
+}
+document.addEventListener('keydown',e=>{
+  if(e.target && e.target.tagName==='SELECT') return;
+  if(lb.classList.contains('open')){ if(e.key==='Escape') closeLB(); return; }
+  if(e.key==='c'||e.key==='C') toggleIso();
+  if(e.key==='p'||e.key==='P') togglePicks();
+  if(e.key==='0') reset();
+  if(e.key==='Escape'){ if(selected().length) clearSel(); else reset(); }
+});
+
+document.getElementById('note').textContent =
+  'Links de afiliado: posso receber comissão pelas compras, sem custo extra pra você · Preços consultados em 12/11/2026 e sujeitos a alteração · Fonte: fichas técnicas Marine Sports · Capacidade ordenada pelo equivalente em 0,35 mm.';
+
+/* ============ CELULAR ============ */
+const mlist = document.getElementById('mlist'), mchips = document.getElementById('mchips');
+const specRows = ROWS.filter(r=>!r.buy && r.label!=='Preço');
+let mstate = {row:null, dir:null};
+REELS.forEach(r=>{
+  const card = document.createElement('div');
+  card.className = 'mcard' + (PICKS[r.nome] ? ' pick' : '');
+  const priceTxt = r.preco!=null ? `R$ ${br(r.preco,2)}` : 'preço em breve';
+  let specs = '';
+  specRows.forEach(row=>{
+    const c = row.cell(r);
+    const v = c ? esc(c.v) + (c.s?`<small>${esc(c.s)}</small>`:'') : '—';
+    specs += `<div class="mrow" data-label="${esc(row.label)}"><dt>${esc(row.label)}</dt><dd>${v}</dd></div>`;
+  });
+  card.innerHTML = `
+    <div class="mtop">
+      <div class="mphoto">${r.img?`<img src="${r.img}" alt="${esc(r.nome)}" loading="lazy">`:''}<div class="mrank"></div></div>
+      <div class="minfo">
+        <div>${PICKS[r.nome]?`<div class="mpick ${PICKS[r.nome].cls}">★ Escolha do Lucas · ${PICKS[r.nome].cat}</div>`:''}<div class="mname">${esc(r.nome)}</div><div class="mprice">${priceTxt}</div></div>
+        ${r.link?`<a class="mbuy" href="${esc(r.link)}" target="_blank" rel="noopener sponsored">Comprar</a>`:''}
+      </div>
+    </div>
+    <dl class="mspecs">${specs}</dl>`;
+  if(r.img) card.querySelector('.mphoto').addEventListener('click',()=>openLB(r));
+  r.mel = card;
+  mlist.appendChild(card);
+});
+
+const chipDefs = [{label:'Ordem original', reset:true}].concat(ROWS.filter(r=>r.key).map(r=>({label:r.label, row:r})));
+// Preço primeiro depois da ordem original (mais útil para quem vai comprar)
+chipDefs.sort((a,b)=> (a.reset?-2:a.label==='Preço'?-1:0) - (b.reset?-2:b.label==='Preço'?-1:0));
+chipDefs.forEach(d=>{
+  const b = document.createElement('button');
+  b.className = 'chip' + (d.reset?' on':'');
+  b.textContent = d.label;
+  b.addEventListener('click',()=>msort(d,b));
+  d.el = b; mchips.appendChild(b);
+});
+
+function mApply(list){
+  const first = new Map(REELS.map(r=>[r, r.mel.getBoundingClientRect().top]));
+  list.forEach(r=>mlist.appendChild(r.mel));
+  list.forEach(r=>{
+    const dy = first.get(r) - r.mel.getBoundingClientRect().top;
+    if(dy) r.mel.animate([{transform:`translateY(${dy}px)`},{transform:'none'}],{duration:500,easing:'cubic-bezier(.22,.8,.24,1)'});
+  });
+}
+function msort(d,btn){
+  chipDefs.forEach(x=>{ x.el.classList.remove('on'); x.el.textContent = x.label; });
+  REELS.forEach(r=>{ r.mel.classList.remove('sorted','pricehl'); r.mel.querySelectorAll('.mrow.hl').forEach(e=>e.classList.remove('hl')); });
+  if(d.reset){ mstate={row:null,dir:null}; btn.classList.add('on'); mApply([...REELS].sort((a,b)=>a.idx-b.idx)); return; }
+  const row = d.row;
+  const dir = mstate.row===row ? (mstate.dir==='asc'?'desc':'asc') : (row.best==='low'?'asc':'desc');
+  mstate = {row, dir};
+  btn.classList.add('on');
+  btn.textContent = `${row.label} ${dir==='asc'?'↑':'↓'}`;
+  const withVal = REELS.filter(r=>row.key(r)!=null).sort((a,b)=>{ const x=row.key(a)-row.key(b); return (dir==='asc'?x:-x)||a.idx-b.idx; });
+  const list = withVal.concat(REELS.filter(r=>row.key(r)==null));
+  mApply(list);
+  let rank=0, prev;
+  list.forEach((r,k)=>{
+    const v=row.key(r); if(v==null) return;
+    if(v!==prev) rank=k+1; prev=v;
+    r.mel.querySelector('.mrank').textContent = rank;
+    r.mel.classList.add('sorted');
+    if(row.label==='Preço') r.mel.classList.add('pricehl');
+    const hl = r.mel.querySelector(`.mrow[data-label="${CSS.escape(row.label)}"]`); if(hl) hl.classList.add('hl');
+  });
+}
+document.getElementById('mfoot').textContent = document.getElementById('note').textContent;
+
+/* ============ ESCALA 16:9 ============ */
+let currentScale = 1;
+function fit(){
+  const mob = window.innerWidth < 900 || window.innerWidth < window.innerHeight;
+  document.body.classList.toggle('mobile', mob);
+  document.documentElement.style.overflow = mob ? 'auto' : 'hidden';
+  if(mob) return;
+  currentScale = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+  document.getElementById('stage').style.transform = `translate(-50%,-50%) scale(${currentScale})`;
+}
+window.addEventListener('resize',fit);
+fit();
+</script>
+</body>
+</html>
